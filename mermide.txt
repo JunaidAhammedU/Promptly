@@ -1,0 +1,73 @@
+erDiagram
+    User ||--o{ Prompt : creates
+    User ||--o{ Collection : owns
+    User ||--o{ Like : gives
+    
+    Prompt ||--o{ PromptTag : has
+    Prompt ||--o{ CollectionPrompt : "belongs to"
+    Prompt ||--o{ Like : receives
+    
+    Tag ||--o{ PromptTag : "tagged in"
+    
+    Collection ||--o{ CollectionPrompt : contains
+    
+    User {
+        string id PK
+        string email UK
+        string password
+        string name
+        UserRole role
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    Prompt {
+        string id PK
+        string title
+        string content
+        string exampleOutput
+        string category
+        boolean isPublic
+        string authorId FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    Collection {
+        string id PK
+        string name
+        string description
+        string userId FK
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    CollectionPrompt {
+        string id PK
+        string collectionId FK
+        string promptId FK
+        datetime addedAt
+    }
+    
+    Like {
+        string id PK
+        string userId FK
+        string promptId FK
+        datetime createdAt
+    }
+    
+    Tag {
+        string id PK
+        string name UK
+    }
+    
+    PromptTag {
+        string id PK
+        string promptId FK
+        string tagId FK
+    }
+    
+    Category {
+        string id PK
+        string name UK
+    }

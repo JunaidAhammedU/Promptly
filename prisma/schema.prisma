@@ -1,15 +1,142 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
-}
-
+// ==========================
+//  Prisma + PostgreSQL setup
+// ==========================
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ==========================
+//  User Model
+// ==========================
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  name     String
+  role     UserRole @default(USER)
+
+  // Relations
+  prompts     Prompt[]     @relation("UserPrompts")
+  collections Collection[]
+  likes       Like[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==========================
+//  Prompt Model
+// ==========================
+model Prompt {
+  id            String  @id @default(uuid())
+  title         String
+  content       String // The actual prompt text
+  exampleOutput String? // Optional preview result
+  category      String? // E.g., "Productivity", "Creativity"
+  isPublic      Boolean @default(true)
+
+  // Relations
+  authorId    String
+  author      User               @relation("UserPrompts", fields: [authorId], references: [id])
+  tags        PromptTag[]        @relation("PromptTags")
+  collections CollectionPrompt[]
+  likes       Like[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==========================
+//  Collection Model
+// ==========================
+model Collection {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  // Relations
+  userId  String
+  user    User               @relation(fields: [userId], references: [id])
+  prompts CollectionPrompt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==========================
+//  Collection <-> Prompt M2M
+// ==========================
+model CollectionPrompt {
+  id           String @id @default(uuid())
+  collectionId String
+  promptId     String
+
+  collection Collection @relation(fields: [collectionId], references: [id])
+  prompt     Prompt     @relation(fields: [promptId], references: [id])
+
+  addedAt DateTime @default(now())
+
+  @@unique([collectionId, promptId]) // Prevent duplicate entries
+}
+
+// ==========================
+//  Likes (Prompt <-> User)
+// ==========================
+model Like {
+  id       String @id @default(uuid())
+  userId   String
+  promptId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  prompt Prompt @relation(fields: [promptId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, promptId]) // One like per user per prompt
+}
+
+// ==========================
+//  Tag Model
+// ==========================
+model Tag {
+  id   String @id @default(uuid())
+  name String @unique
+
+  // Relations
+  prompts PromptTag[] @relation("PromptTags")
+}
+
+// ==========================
+//  Prompt <-> Tag M2M
+// ==========================
+model PromptTag {
+  id       String @id @default(uuid())
+  promptId String
+  tagId    String
+
+  prompt Prompt @relation("PromptTags", fields: [promptId], references: [id])
+  tag    Tag    @relation("PromptTags", fields: [tagId], references: [id])
+
+  @@unique([promptId, tagId]) // Prevent duplicate tags on the same prompt
+}
+
+// ==========================
+//  Optional Categories
+// ==========================
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+}
+
+// ==========================
+//  Enums
+// ==========================
+enum UserRole {
+  USER
+  ADMIN
 }
