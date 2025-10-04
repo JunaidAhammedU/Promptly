@@ -51,7 +51,7 @@ src/common/
 - Adds metadata (success status, timestamp, status code)
 
 ### 5. **Enhanced Validation**
-- JoiValidationPipe now throws custom exceptions
+- Global ValidationPipe with class-validator decorators
 - Detailed field-level error information
 - Better error messages
 
@@ -199,7 +199,7 @@ Both methods work, but using providers in `app.module.ts` allows for dependency 
 
 - See `users.service.example.ts` for implementation examples
 - Check the Winston logger configuration in `src/config/logger.ts`
-- Review the Joi validation pipe in `src/config/joi-validation.pipe.ts`
+- Review the global ValidationPipe configuration in `src/main.ts`
 
 ## 🐛 Troubleshooting
 

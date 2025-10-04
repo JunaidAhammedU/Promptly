@@ -1,6 +1,24 @@
+import { IsString, IsEmail, MinLength, MaxLength, IsOptional, IsIn, Matches } from 'class-validator';
+
 export class CreateUserDto {
+    @IsString()
+    @MinLength(3)
+    @MaxLength(30)
     name: string;
+
+    @IsEmail()
     email: string;
+
+    @IsString()
+    @MinLength(6)
+    @MaxLength(12)
+    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()[\]{}\-_=+|;:'",.<>/?`~]).+$/, {
+        message: 'password must include uppercase, lowercase, numeric, and special characters',
+    })
     password: string;
-    role?: string;
+
+    @IsOptional()
+    @IsString()
+    @IsIn(['user', 'admin'])
+    role?: string = 'user';
 }

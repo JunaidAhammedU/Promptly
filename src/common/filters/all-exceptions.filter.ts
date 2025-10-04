@@ -42,7 +42,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
                 timestamp,
                 path,
                 ...(process.env.NODE_ENV !== 'production' && {
-                    stack: exception.stack,
                 }),
             };
         }
@@ -63,7 +62,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
                 timestamp,
                 path,
                 ...(process.env.NODE_ENV !== 'production' && {
-                    stack: exception.stack,
                 }),
             };
         }
@@ -95,7 +93,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
             timestamp,
             path,
             ...(process.env.NODE_ENV !== 'production' && isError && {
-                stack: exception.stack,
             }),
         };
     }
@@ -212,7 +209,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
                 error: exception instanceof Error ? {
                     name: exception.name,
                     message: exception.message,
-                    stack: exception.stack,
                 } : exception,
             });
         } else if (errorResponse.statusCode >= 400) {
