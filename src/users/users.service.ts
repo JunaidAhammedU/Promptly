@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repository';
-import { ConflictException } from 'src/common';
+import { ConflictException, NotFoundException } from 'src/common';
 
 @Injectable()
 export class UsersService {
@@ -26,8 +26,19 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.usersRepository.getUserById(id.toString());
+    console.log(user);
+    if (!user) {
+      throw new NotFoundException('User not found', [
+        {
+          field: 'id',
+          message: 'User with this ID does not exist',
+          value: id,
+        },
+      ]);
+    }
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
