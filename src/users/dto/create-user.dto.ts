@@ -19,6 +19,6 @@ export class CreateUserDto {
 
     @IsOptional()
     @IsString()
-    @IsIn(['user', 'admin'])
-    role?: string = 'user';
+    @IsIn(['USER', 'ADMIN'], { message: 'Role must be either USER or ADMIN' })
+    role?: string = 'USER';
 }

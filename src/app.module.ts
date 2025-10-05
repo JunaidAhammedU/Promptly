@@ -10,6 +10,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { CryptoHelper } from './common/helper/crypto.helper';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
       provide: APP_INTERCEPTOR,
       useClass: TransformInterceptor,
     },
+    CryptoHelper,
   ],
 })
 export class AppModule { }
