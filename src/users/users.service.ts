@@ -26,9 +26,8 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  async findOne(id: number) {
-    const user = await this.usersRepository.getUserById(id.toString());
-    console.log(user);
+  async findOne(id: string) {
+    const user = await this.usersRepository.getUserById(id);
     if (!user) {
       throw new NotFoundException('User not found', [
         {

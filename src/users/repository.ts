@@ -47,6 +47,12 @@ export class UsersRepository {
         return this.prisma.user.findUnique({
             where: {
                 id: id
+            },
+            select: {
+                name: true,
+                email: true,
+                createdAt: true,
+                role: true,
             }
         }).catch((error) => {
             throw error;
