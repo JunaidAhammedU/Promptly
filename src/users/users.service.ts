@@ -40,11 +40,42 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.usersRepository.getUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found', [
+        {
+          field: 'id',
+          message: 'User with this ID does not exist',
+          value: id,
+        },
+      ]);
+    }
+    const existingUser = await this.usersRepository.checkUserAlreadyExist(updateUserDto?.email as string);
+    if (existingUser && existingUser.id !== id) {
+      throw new ConflictException('User already exists, with same email', [
+        {
+          field: 'email',
+          message: 'This email is already registered',
+          value: updateUserDto.email,
+        },
+      ]);
+    }
+    const updateUser = await this.usersRepository.updateUser(id, updateUserDto);
+    return updateUser;
   }
 
-  remove(id: number) {
+  async remove(id: string) {
+    const user = await this.usersRepository.getUserById(id);
+    if (!user) {
+      throw new NotFoundException('User not found', [
+        {
+          field: 'id',
+          message: 'User with this ID does not exist',
+          value: id,
+        },
+      ]);
+    }
     return `This action removes a #${id} user`;
   }
 }

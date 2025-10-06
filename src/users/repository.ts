@@ -31,12 +31,18 @@ export class UsersRepository {
     }
 
     // update user
-    updateUser = async (id: string, data: { name?: string; email?: string; password?: string }) => {
+    updateUser = async (id: string, data: { name?: string; email?: string }) => {
         return await this.prisma.user.update({
             where: {
                 id: id,
             },
             data: data,
+            select: {
+                name: true,
+                email: true,
+                createdAt: true,
+                role: true,
+            }
         }).catch((error) => {
             throw error;
         });
