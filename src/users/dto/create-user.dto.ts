@@ -7,8 +7,10 @@ export class CreateUserDto {
     name: string;
 
     @IsEmail()
+    @Matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, { message: 'email must match standard pattern' })
     email: string;
 
+    @IsOptional()
     @IsString()
     @MinLength(6)
     @MaxLength(12)
