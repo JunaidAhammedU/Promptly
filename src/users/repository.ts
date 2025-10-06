@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DatabaseException } from 'src/common';
 import { CryptoHelper } from 'src/common/helper/crypto.helper';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -16,6 +17,14 @@ export class UsersRepository {
             where: {
                 email: email,
             },
+        }).catch((error) => {
+            throw new DatabaseException('Failed to check user existence', [
+                {
+                    field: 'email',
+                    message: `Unable to check user with this email | ${error.message}`,
+                    value: email,
+                },
+            ]);
         });
     }
 
@@ -26,7 +35,13 @@ export class UsersRepository {
         return await this.prisma.user.create({
             data: data,
         }).catch((error) => {
-            throw error;
+            throw new DatabaseException('Failed to create user', [
+                {
+                    field: 'email',
+                    message: `Unable to create user | ${error.message}`,
+                    value: data.email,
+                },
+            ]);
         });
     }
 
@@ -44,7 +59,13 @@ export class UsersRepository {
                 role: true,
             }
         }).catch((error) => {
-            throw error;
+            throw new DatabaseException('Failed to update user', [
+                {
+                    field: 'id',
+                    message: `Unable to update user with this ID | ${error.message}`,
+                    value: id,
+                },
+            ]);
         });
     }
 
@@ -61,7 +82,13 @@ export class UsersRepository {
                 role: true,
             }
         }).catch((error) => {
-            throw error;
+            throw new DatabaseException('Failed to retrieve user', [
+                {
+                    field: 'id',
+                    message: `Unable to retrieve user with this ID | ${error.message}`,
+                    value: id,
+                },
+            ]);
         });
     }
 
@@ -72,7 +99,13 @@ export class UsersRepository {
                 id: id,
             },
         }).catch((error) => {
-            throw error;
+            throw new DatabaseException('Failed to delete user', [
+                {
+                    field: 'id',
+                    message: `Unable to delete user with this ID | ${error.message}`,
+                    value: id,
+                },
+            ]);
         });
     }
 
