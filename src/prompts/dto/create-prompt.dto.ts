@@ -24,11 +24,11 @@ export class CreatePromptDto {
     isPublic: boolean;
 
     @IsString()
-    autherId: string;
+    authorId: string;
 
     @Optional()
     @IsString()
-    auther: string;
+    author: string;
 
     @Optional()
     @IsArray()

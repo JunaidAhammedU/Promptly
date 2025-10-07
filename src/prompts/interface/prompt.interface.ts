@@ -5,8 +5,7 @@ export interface IPrompt {
     exampleOutput: string;
     category: string;
     isPublic: boolean;
-    autherId: string;
-    auther: string;
+    authorId: string;
     tags: string[];
 }
 
@@ -17,8 +16,8 @@ export interface IPromptResponse {
     exampleOutput: string;
     category: string;
     isPublic: boolean;
-    autherId: string;
-    auther: string;
+    authorId: string;
+    author: string;
     tags: string[];
     createdAt: Date;
     updatedAt: Date;
@@ -31,7 +30,7 @@ export interface IPromptUpdate {
     exampleOutput?: string;
     category?: string;
     isPublic?: boolean;
-    autherId?: string;
-    auther?: string;
+    authorId?: string;
+    author?: string;
     tags?: string[];
 }
