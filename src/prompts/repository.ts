@@ -8,17 +8,17 @@ export class PromptRepository {
         private prisma: PrismaService,
     ) { }
 
-    async create(entity: IPrompt): Promise<IPromptResponse> {
+    async create(data: IPrompt): Promise<IPromptResponse> {
         const prompt = await this.prisma.prompt.create({
             data: {
-                title: entity.title,
-                content: entity.content,
-                exampleOutput: entity.exampleOutput,
-                category: entity.category,
-                isPublic: entity.isPublic,
-                authorId: entity.authorId,
+                title: data.title,
+                content: data.content,
+                exampleOutput: data.exampleOutput,
+                category: data.category,
+                isPublic: data.isPublic,
+                authorId: data.authorId,
                 tags: {
-                    create: entity.tags.map(tag => ({
+                    create: data.tags.map(tag => ({
                         tag: {
                             connectOrCreate: {
                                 where: { name: tag },
@@ -39,13 +39,11 @@ export class PromptRepository {
         });
 
         return {
-            id: prompt.id,
             title: prompt.title,
             content: prompt.content,
             exampleOutput: prompt.exampleOutput ?? '',
             category: prompt.category ?? '',
             isPublic: prompt.isPublic,
-            authorId: prompt.authorId,
             author: prompt.author.name,
             tags: prompt.tags.map(pt => pt.tag.name),
             createdAt: prompt.createdAt,

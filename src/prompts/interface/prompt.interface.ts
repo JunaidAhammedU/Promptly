@@ -10,13 +10,11 @@ export interface IPrompt {
 }
 
 export interface IPromptResponse {
-    id: string;
     title: string;
     content: string;
     exampleOutput: string;
     category: string;
     isPublic: boolean;
-    authorId: string;
     author: string;
     tags: string[];
     createdAt: Date;
