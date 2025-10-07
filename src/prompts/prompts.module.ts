@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PromptsService } from './prompts.service';
 import { PromptsController } from './prompts.controller';
-import { Repository } from './repository';
+import { PromptRepository } from './repository';
 
 @Module({
   controllers: [PromptsController],
-  providers: [PromptsService, Repository],
+  providers: [PromptsService, PromptRepository],
 })
 export class PromptsModule { }

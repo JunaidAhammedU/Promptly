@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePromptDto } from './dto/create-prompt.dto';
 import { UpdatePromptDto } from './dto/update-prompt.dto';
+import { PromptRepository } from './repository';
 
 @Injectable()
 export class PromptsService {
-  constructor() { }
+  constructor(private promptRepository: PromptRepository) { }
   create(createPromptDto: CreatePromptDto) {
-
-    return createPromptDto;
+    return this.promptRepository.create(createPromptDto);
   }
 
   findAll() {
