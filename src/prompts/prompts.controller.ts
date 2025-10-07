@@ -5,7 +5,7 @@ import { UpdatePromptDto } from './dto/update-prompt.dto';
 
 @Controller('prompts')
 export class PromptsController {
-  constructor(private readonly promptsService: PromptsService) {}
+  constructor(private readonly promptsService: PromptsService) { }
 
   @Post()
   create(@Body() createPromptDto: CreatePromptDto) {

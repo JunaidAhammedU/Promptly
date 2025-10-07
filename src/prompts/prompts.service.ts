@@ -4,8 +4,10 @@ import { UpdatePromptDto } from './dto/update-prompt.dto';
 
 @Injectable()
 export class PromptsService {
+  constructor() { }
   create(createPromptDto: CreatePromptDto) {
-    return 'This action adds a new prompt';
+
+    return createPromptDto;
   }
 
   findAll() {
