@@ -161,4 +161,16 @@ export class PromptRepository {
             updatedAt: prompt.updatedAt
         };
     }
+
+    async remove(id: string): Promise<boolean | null> {
+        const prompt = await this.prisma.prompt.delete(
+            {
+                where: { id }
+            }
+        )
+
+        if (!prompt) return null;
+
+        return true;
+    }
 }
