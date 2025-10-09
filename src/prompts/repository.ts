@@ -50,4 +50,32 @@ export class PromptRepository {
             updatedAt: prompt.updatedAt
         };
     }
+
+    async getById(id: string): Promise<IPromptResponse | null> {
+        const prompt = await this.prisma.prompt.findUnique({
+            where: { id },
+            include: {
+                author: true,
+                tags: {
+                    include: {
+                        tag: true
+                    }
+                }
+            },
+        });
+
+        if (!prompt) return null;
+
+        return {
+            title: prompt.title,
+            content: prompt.content,
+            exampleOutput: prompt.exampleOutput ?? '',
+            category: prompt.category ?? '',
+            isPublic: prompt.isPublic,
+            author: prompt.author.name,
+            tags: prompt.tags.map(pt => pt.tag.name),
+            createdAt: prompt.createdAt,
+            updatedAt: prompt.updatedAt
+        };
+    }
 }
