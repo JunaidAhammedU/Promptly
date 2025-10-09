@@ -19,16 +19,16 @@ export class PromptsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.promptsService.findOne(+id);
+    return this.promptsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePromptDto: UpdatePromptDto) {
-    return this.promptsService.update(+id, updatePromptDto);
+    return this.promptsService.update(id, updatePromptDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.promptsService.remove(+id);
+    return this.promptsService.remove(id);
   }
 }

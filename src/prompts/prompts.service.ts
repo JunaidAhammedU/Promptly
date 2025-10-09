@@ -11,18 +11,26 @@ export class PromptsService {
   }
 
   findAll() {
-    return `This action returns all prompts`;
+    return this.promptRepository.getAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} prompt`;
+  findOne(id: string) {
+    return this.promptRepository.getById(id);
   }
 
-  update(id: number, updatePromptDto: UpdatePromptDto) {
-    return `This action updates a #${id} prompt`;
+  update(id: string, updatePromptDto: UpdatePromptDto) {
+    const exists = this.promptRepository.exists(id);
+    if (!exists) {
+      throw new Error('Prompt not found');
+    }
+    return this.promptRepository.update(id, updatePromptDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} prompt`;
+  remove(id: string) {
+    const exists = this.promptRepository.exists(id);
+    if (!exists) {
+      throw new Error('Prompt not found');
+    }
+    return this.promptRepository.remove(id);
   }
 }
