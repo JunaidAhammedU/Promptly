@@ -5,12 +5,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @Post('login')
-  login(@Body() createAuthDto: CreateAuthDto) {
+  login(@Body() createAuthDto: any) {
     return "success";
   }
 
   @Post('register')
-  register(@Body() createAuthDto: CreateAuthDto) {
+  register(@Body() createAuthDto: any) {
     return "success";
   }
 }
