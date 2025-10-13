@@ -9,6 +9,7 @@ export class AuthController {
     return "success";
   }
 
+  // Register a new user
   @Post('register')
   register(@Body() createAuthDto: any) {
     return "success";
